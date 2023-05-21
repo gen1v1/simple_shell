@@ -5,9 +5,9 @@
 
 #define MAX_STRING_LEN 80
 
-char *reverse_string(char *str);
-char *trim_whitespace(char *str);
-int count_vowels(char *str);
+void reverse_string(char* str);
+void trim_whitespace(char* str);
+int count_vowels(char* str);
 
 int main(void)
 {
@@ -15,57 +15,61 @@ int main(void)
     printf("Enter a string: ");
     fgets(input_str, MAX_STRING_LEN, stdin);
 
-    char *reversed_str = reverse_string(input_str);
-    printf("Reversed string: %s\n", reversed_str);
-    free(reversed_str);
+    // Remove newline character
+    input_str[strcspn(input_str, "\n")] = '\0';
 
-    char *trimmed_str = trim_whitespace(input_str);
-    printf("Trimmed string: %s\n", trimmed_str);
-    free(trimmed_str);
+    // Reverse the string
+    reverse_string(input_str);
+    printf("Reversed string: %s\n", input_str);
 
+    // Trim the whitespace from the string
+    trim_whitespace(input_str);
+    printf("Trimmed string: %s\n", input_str);
+
+    // Count the number of vowels in the string
     int vowel_count = count_vowels(input_str);
     printf("Number of vowels: %d\n", vowel_count);
 
     return 0;
 }
 
-char *reverse_string(char *str)
+void reverse_string(char* str)
 {
     int len = strlen(str);
-    char *result = (char *)malloc(len + 1);
+    int i = 0;
+    int j = len - 1;
 
-    for (int i = 0; i < len; i++)
+    while (i < j)
     {
-        result[i] = str[len - i - 1];
+        char temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+        i++;
+        j--;
     }
-    result[len] = '\0';
-
-    return result;
 }
 
-char *trim_whitespace(char *str)
+void trim_whitespace(char* str)
 {
     int len = strlen(str);
     int start = 0;
     int end = len - 1;
 
-    while (str[start] == ' ')
+    while (str[start] == ' ' || str[start] == '\t')
     {
         start++;
     }
-    while (str[end] == ' ' || str[end] == '\n')
+    while (str[end] == ' ' || str[end] == '\t' || str[end] == '\n')
     {
         end--;
     }
 
-    char *result = (char *)malloc(end - start + 2);
-    strncpy(result, &str[start], end - start + 1);
-    result[end - start + 1] = '\0';
-
-    return result;
+    int trimmed_len = end - start + 1;
+    memmove(str, str + start, trimmed_len);
+    str[trimmed_len] = '\0';
 }
 
-int count_vowels(char *str)
+int count_vowels(char* str)
 {
     int count = 0;
     int len = strlen(str);
@@ -81,4 +85,3 @@ int count_vowels(char *str)
 
     return count;
 }
-
