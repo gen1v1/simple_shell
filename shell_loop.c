@@ -1,4 +1,3 @@
-Almost out of storage … If you run out, you can't create or edit files, send or receive email on Gmail, or back up to Google Photos.
 #include "shell.h"
 
 /**

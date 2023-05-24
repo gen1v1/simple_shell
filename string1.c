@@ -1,87 +1,87 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include "shell.h"
 
-#define MAX_STRING_LEN 80
-
-void reverse_string(char* str);
-void trim_whitespace(char* str);
-int count_vowels(char* str);
-
-int main(void)
+/**
+ * _strcpy - copies a string
+ * @dest: the destination
+ * @src: the source
+ *
+ * Return: pointer to destination
+ */
+char *_strcpy(char *dest, char *src)
 {
-    char input_str[MAX_STRING_LEN];
-    printf("Enter a string: ");
-    fgets(input_str, MAX_STRING_LEN, stdin);
+	int i = 0;
 
-    // Remove newline character
-    input_str[strcspn(input_str, "\n")] = '\0';
-
-    // Reverse the string
-    reverse_string(input_str);
-    printf("Reversed string: %s\n", input_str);
-
-    // Trim the whitespace from the string
-    trim_whitespace(input_str);
-    printf("Trimmed string: %s\n", input_str);
-
-    // Count the number of vowels in the string
-    int vowel_count = count_vowels(input_str);
-    printf("Number of vowels: %d\n", vowel_count);
-
-    return 0;
+	if (dest == src || src == 0)
+		return (dest);
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = 0;
+	return (dest);
 }
 
-void reverse_string(char* str)
+/**
+ * _strdup - duplicates a string
+ * @str: the string to duplicate
+ *
+ * Return: pointer to the duplicated string
+ */
+char *_strdup(const char *str)
 {
-    int len = strlen(str);
-    int i = 0;
-    int j = len - 1;
+	int length = 0;
+	char *ret;
 
-    while (i < j)
-    {
-        char temp = str[i];
-        str[i] = str[j];
-        str[j] = temp;
-        i++;
-        j--;
-    }
+	if (str == NULL)
+		return (NULL);
+	while (*str++)
+		length++;
+	ret = malloc(sizeof(char) * (length + 1));
+	if (!ret)
+		return (NULL);
+	for (length++; length--;)
+		ret[length] = *--str;
+	return (ret);
 }
 
-void trim_whitespace(char* str)
+/**
+ * _puts - prints an input string
+ * @str: the string to be printed
+ *
+ * Return: Nothing
+ */
+void _puts(char *str)
 {
-    int len = strlen(str);
-    int start = 0;
-    int end = len - 1;
+	int i = 0;
 
-    while (str[start] == ' ' || str[start] == '\t')
-    {
-        start++;
-    }
-    while (str[end] == ' ' || str[end] == '\t' || str[end] == '\n')
-    {
-        end--;
-    }
-
-    int trimmed_len = end - start + 1;
-    memmove(str, str + start, trimmed_len);
-    str[trimmed_len] = '\0';
+	if (!str)
+		return;
+	while (str[i] != '\0')
+	{
+		_putchar(str[i]);
+		i++;
+	}
 }
 
-int count_vowels(char* str)
+/**
+ * _putchar - writes the character c to stdout
+ * @c: The character to print
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
+ */
+int _putchar(char c)
 {
-    int count = 0;
-    int len = strlen(str);
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
 
-    for (int i = 0; i < len; i++)
-    {
-        char c = tolower(str[i]);
-        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
-        {
-            count++;
-        }
-    }
-
-    return count;
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(1, buf, i);
+		i = 0;
+	}
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+	return (1);
 }
